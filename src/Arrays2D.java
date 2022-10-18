@@ -35,13 +35,13 @@ public class Arrays2D {
         snail = new int[r*r];
         for (int i = 0; i<r*r; i++){
             System.out.println("Step");
-            for (int b = r; b>=0; b--){
+            for (x = 0; x<r; x++){
                 for (y = 0; y<c; y++){
                     snail [i] = arrayIn[x][y];
                     i++;
                 }
                 y--;
-                for (x = c-y; x<b; x++) {
+                for (x = c-y; x<r; x++) {
                     snail [i] = arrayIn[x][y];
                     i++;
                 }
