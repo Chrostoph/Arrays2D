@@ -14,7 +14,7 @@ public class Arrays2D {
 
         arrayIn = new int[r][c];
 
-        System.out.println("Type in " + (r + c) + " numbers one after another:");
+        System.out.println("Type in " + (r * c) + " numbers one after another:");
         for (x = 0; x < r; x++) {
             for (y = 0; y < c; y++) {
                 arrayIn[x][y] = sc.nextInt();
