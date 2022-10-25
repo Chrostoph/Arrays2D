@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Arrays2D {
-    public int r, c, x, y;
+    public int r, c, x, y, n;
     int[][] arrayIn = new int[r][c];
     int[] snail = new int[r * r];
 
@@ -11,6 +11,7 @@ public class Arrays2D {
         r = sc.nextInt();
         System.out.println("Type in the number of columns of your matrice:");
         c = sc.nextInt();
+        n = r * r;
 
         arrayIn = new int[r][c];
 
@@ -33,24 +34,63 @@ public class Arrays2D {
     }
 
     public void snail() {
+        System.out.println();
         snail = new int[r * r];
-        for (int i = 0; i < r * r; i++) {
-            System.out.println("Step");
-            for (; x >= 0; x--) {
-                for (; y < c; y++) {
-                    snail[i] = arrayIn[x][y];
-                    i++;
+        int step = 0;
+        int cycles = r - 1;
+        x = y = 0;
+        mainLoop:
+        for (int i = 0; i < cycles; i++) {
+            for (; y < r; y++) {
+                if (i > 0) {
+                    y++;
                 }
-                y--;
-                for (x = c - y; x < y; x++) {
-                    snail[i] = arrayIn[x][y];
-                    i++;
+                printValue();
+                if (isEnd(step++)) break mainLoop;
+                if (y == r - 1) {
+                    moveRightDown();
+                    if (isEnd(step++)) break mainLoop;
+                    while (y > 0) {
+                        y--;
+                        printValue();
+                        if (isEnd(step++)) break mainLoop;
+                        if (y == 0) {
+                            r--;
+                            moveLeftUp();
+                            if (isEnd(step++)) break mainLoop;
+                            break;
+                        }
+                    }
+                    break;
                 }
             }
+            System.out.println();
         }
-        for (int i : snail) {
-            System.out.print(i + " ");
+    }
+
+    private void moveLeftUp() {
+        for (int q = 0; q < r - 1; q++) {
+            x--;
+            printValue();
         }
+    }
+
+    private void moveRightDown() {
+        while (x < r) {
+            x++;
+            printValue();
+            if (x == r - 1) {
+                break;
+            }
+        }
+    }
+
+    private void printValue() {
+        System.out.print(arrayIn[x][y] + " ");
+    }
+
+    private boolean isEnd(int step) {
+        return step == n;
     }
 
 }
