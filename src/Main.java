@@ -3,6 +3,7 @@ public class Main {
         Arrays2D arrayIn = new Arrays2D();
         arrayIn.readArray();
         arrayIn.printArray();
-        arrayIn.snail();
+        int[] snailArray = arrayIn.getSnailOrder();
+        arrayIn.printInSnailOrder(snailArray);
     }
 }

@@ -1,23 +1,25 @@
 import java.util.Scanner;
 
 public class Arrays2D {
-    public int r, c, x, y, n;
-    int[][] arrayIn = new int[r][c];
-    int[] snail = new int[r * r];
+    public int rows, columns, x, y, itemsInArray;
+    int step = 0;
+
+    int[][] arrayIn = new int[rows][columns];
+    int[] snail = new int[rows * rows];
 
     public void readArray() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Type in the number of rows of your matrice:");
-        r = sc.nextInt();
+        rows = sc.nextInt();
         System.out.println("Type in the number of columns of your matrice:");
-        c = sc.nextInt();
-        n = r * r;
+        columns = sc.nextInt();
+        itemsInArray = rows * columns;
 
-        arrayIn = new int[r][c];
+        arrayIn = new int[rows][columns];
 
-        System.out.println("Type in " + (r * c) + " numbers one after another:");
-        for (x = 0; x < r; x++) {
-            for (y = 0; y < c; y++) {
+        System.out.println("Type in " + (rows * columns) + " numbers one after another:");
+        for (x = 0; x < rows; x++) {
+            for (y = 0; y < columns; y++) {
                 arrayIn[x][y] = sc.nextInt();
             }
         }
@@ -25,72 +27,83 @@ public class Arrays2D {
 
     public void printArray() {
         System.out.println("Your matrice is: ");
-        for (x = 0; x < r; x++) {
-            for (y = 0; y < c; y++) {
+        for (x = 0; x < rows; x++) {
+            for (y = 0; y < columns; y++) {
                 System.out.print(arrayIn[x][y] + " ");
             }
             System.out.println();
         }
     }
 
-    public void snail() {
-        System.out.println();
-        snail = new int[r * r];
-        int step = 0;
-        int cycles = r - 1;
+    public int[] getSnailOrder() {
+        snail = new int[rows * columns];
+        int cycles = rows - 1;
         x = y = 0;
-        mainLoop:
         for (int i = 0; i < cycles; i++) {
-            for (; y < r; y++) {
-                if (i > 0) {
-                    y++;
-                }
-                printValue();
-                if (isEnd(step++)) break mainLoop;
-                if (y == r - 1) {
+            for (; y < columns; y++) {
+                moveTopRight(i);
+                if (y == columns - 1) {
                     moveRightDown();
-                    if (isEnd(step++)) break mainLoop;
-                    while (y > 0) {
-                        y--;
-                        printValue();
-                        if (isEnd(step++)) break mainLoop;
-                        if (y == 0) {
-                            r--;
-                            moveLeftUp();
-                            if (isEnd(step++)) break mainLoop;
-                            break;
-                        }
-                    }
-                    break;
+                    moveBottomLeftAndUp();
                 }
             }
-            System.out.println();
+        }
+        return snail;
+    }
+
+    public void printInSnailOrder(int[] array) {
+        System.out.println();
+        for (int i : array) {
+            System.out.print(i + " ");
         }
     }
 
-    private void moveLeftUp() {
-        for (int q = 0; q < r - 1; q++) {
-            x--;
-            printValue();
+    private void moveTopRight(int i) {
+        if (i > 0) {
+            y++;
         }
+        getValueToArray();
     }
 
-    private void moveRightDown() {
-        while (x < r) {
-            x++;
-            printValue();
-            if (x == r - 1) {
+    private void moveBottomLeftAndUp() {
+        while (y > 0) {
+            y--;
+            getValueToArray();
+            if (y == 0) {
+                rows--;
+                columns--;
+                moveLeftUp();
                 break;
             }
         }
     }
 
-    private void printValue() {
-        System.out.print(arrayIn[x][y] + " ");
+    private void moveLeftUp() {
+        for (int q = 0; q < rows - 1; q++) {
+            x--;
+            getValueToArray();
+        }
+    }
+
+    private void moveRightDown() {
+        while (x < rows) {
+            x++;
+            getValueToArray();
+            if (x == rows - 1) {
+                break;
+            }
+        }
+    }
+
+    private void getValueToArray() {
+        if (step < itemsInArray) {
+            snail[step] = arrayIn[x][y];
+            step++;
+        }
     }
 
     private boolean isEnd(int step) {
-        return step == n;
+        return step == itemsInArray;
     }
 
 }
