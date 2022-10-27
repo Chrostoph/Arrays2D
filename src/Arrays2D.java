@@ -105,6 +105,4 @@ public class Arrays2D {
     private boolean isEnd(int step) {
         return step == itemsInArray;
     }
-
 }
-
